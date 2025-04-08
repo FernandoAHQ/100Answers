@@ -1,0 +1,10 @@
+.btn {
+  margin: calc(var(--spacing) * 4);
+  width: 100%;
+}
+
+.btn > button {
+  width: 100%;
+  color: orange;
+  font-size: large;
+}
