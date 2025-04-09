@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import styles from "./host.module.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-type GameConfigType = {
+type FunctionParams = {
+  requestGame: (gameConfig: GameConfigType) => void;
+  next: () => void;
+};
+
+export type GameConfigType = {
   team1: string;
   team2: string;
   teamSize: number;
@@ -17,7 +22,7 @@ const initialGameConfig: GameConfigType = {
   randomTeam: false,
 };
 
-function GameConfig() {
+function GameConfig({ requestGame, next }: FunctionParams) {
   const [gameConfig, setGameConfig] =
     useState<GameConfigType>(initialGameConfig);
 
@@ -29,7 +34,7 @@ function GameConfig() {
         <div className="teams  p-1">
           <div className="team1 mb-5">
             <label
-              className="block text-white font-bold"
+              className="block text-orange font-bold"
               htmlFor="inline-full-name"
             >
               Team 1
@@ -114,7 +119,10 @@ function GameConfig() {
         <button
           className={`${styles.btn}, ${styles.btnGo}`}
           onClick={() => {
-            console.table(gameConfig);
+            if (validateData(gameConfig)) {
+              requestGame(gameConfig);
+              next();
+            }
           }}
         >
           <FaArrowRight></FaArrowRight>
@@ -123,5 +131,17 @@ function GameConfig() {
     </div>
   );
 }
+
+const validateData = (data: GameConfigType) => {
+  if (!data.team1 || !data.team2) {
+    alert("Please enter team names.");
+    return false;
+  }
+  if (data.teamSize <= 0) {
+    alert("Team size must be greater than 0.");
+    return false;
+  }
+  return true;
+};
 
 export default GameConfig;
