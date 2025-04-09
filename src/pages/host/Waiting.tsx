@@ -1,29 +1,41 @@
+import { Team } from "../../types/teams";
 import styles from "./host.module.css";
-function Waiting() {
+function Waiting({
+  gameId,
+  teams,
+}: {
+  gameId: string | null;
+  teams: Map<string, Team>;
+}) {
+  console.log(teams);
+
   return (
-    <div className="flex flex-col justify-center items-center">
-      <h1 className={styles.waitingTitle}>Waiting on Players...</h1>
-      <div className="flex justify-between ">
-        <div className={styles.teamList}>
-          <h2>Team 1</h2>
-          <div className={styles.teamMembers}>
-            <h3>Player 1</h3>
-            <h3>Player 2</h3>
-            <h3>Player 3</h3>
-            <h3>Player 4</h3>
-            <h3>Player 5</h3>
-          </div>
-        </div>
-        <div className={styles.teamList}>
-          <h2>Team 2</h2>
-          <div className={styles.teamMembers}>
-            <h3>Player 1</h3>
-            <h3>Player 2</h3>
-            <h3>Player 3</h3>
-            <h3>Player 4</h3>
-            <h3>Player 5</h3>
-          </div>
-        </div>
+    <div className="flex flex-col justify-center items-center w-full">
+      <h1 className={styles.waitingTitle}>
+        {gameId ? "Waiting on Players..." : "Creating Game"}
+      </h1>
+
+      <div className="flex flex-col justify-center items-center w-full">
+        {Array.from(teams, ([name, value]) => ({ name, value })).map((team) => {
+          return (
+            <div key={team.name} className={styles.teamList}>
+              <h2>{team.name}</h2>
+              <div className={styles.teamMembers}>
+                <h3>Player 33</h3>
+                <h3>Player 33</h3>
+                <h3>Player 33</h3>
+                <h3>Player 33</h3>
+                <h3>Player 33</h3>
+                <h3>Player 33</h3>
+                {Array.from(team.value.players, ([name]) => ({ name })).map(
+                  (player) => {
+                    return <h3 key={player.name}>{player.name}</h3>;
+                  }
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
