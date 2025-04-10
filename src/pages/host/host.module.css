@@ -125,3 +125,25 @@
   margin-bottom: 0.5em;
   background-color: rgba(255, 255, 255, 0.123);
 }
+
+.startBtn {
+  font-size: 2em;
+  font-weight: bolder;
+  text-align: center;
+  color: #fff;
+  padding: 0;
+  padding: 0 0.5em 0 0.5em;
+  margin-bottom: 0.5em;
+  background-color: #ff9419;
+  outline: solid 1px #fff;
+}
+
+.startBtn:hover {
+  filter: drop-shadow(0 0 0.75rem orange);
+  background-color: #ff9419;
+}
+
+.startBtn:focus {
+  border: solid 1px #fff;
+  outline: solid 1px #fff;
+}

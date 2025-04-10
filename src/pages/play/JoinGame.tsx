@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlayStageType } from "../../types/Play.types";
+import { PlayStage } from "../../types/Play.types";
 import styles from "./Play.module.css";
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
@@ -14,8 +14,8 @@ function JoinGame({
 }: {
   checkCode: (gameId: string) => void;
   requestJoin: (gameId: string, name: string, team: string) => void;
-  stage: PlayStageType;
-  setStage: (nextStage: PlayStageType) => void;
+  stage: PlayStage;
+  setStage: (nextStage: PlayStage) => void;
   gameId: string | null;
   availableTeams: string[] | null;
 }) {
@@ -136,7 +136,7 @@ function JoinGame({
                   requestJoin(gameId!, name, teamSelected);
                   break;
               }
-              setStage("LOADING");
+              setStage(PlayStage.LOADING);
             }}
           >
             <FaArrowRight></FaArrowRight>

@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useConnection } from "../../hooks/useConnection";
+import { useEffect, useState } from "react";
+
 import JoinGame from "./JoinGame";
-import { PlayStageType } from "../../types/Play.types";
 import Loading from "../Loading";
-import { Team } from "../../types/teams";
-import { deserializeTeams } from "../../utils/serialize";
 import Lobby from "./Lobby";
+
+import { PlayStage } from "../../types/Play.types";
+import { Team } from "../../types/teams";
+
+import { deserializeTeams } from "../../utils/serialize";
+
+import { usePlayerConnection } from "../../hooks/connections/usePlayerConnection";
 
 function Play() {
   const codeChecked = (data: {
@@ -18,10 +22,10 @@ function Play() {
       setAvailableTeams(data.availableTeams);
       setTimeout(() => {
         setGameId(data.gameId);
-        setStage("NAME");
+        setStage(PlayStage.NAME);
       }, 500);
     } else {
-      setStage("CODE");
+      setStage(PlayStage.CODE);
     }
   };
 
@@ -35,14 +39,14 @@ function Play() {
     setTimeout(() => {
       if (isAccepted) {
         setTeams(deserializeTeams(teams));
-        setStage("WAITING");
+        setStage(PlayStage.WAITING);
       } else {
         alert("Error");
       }
-    }, 1500);
+    }, 1000);
   };
 
-  const [stage, setStage] = useState<PlayStageType>("CODE");
+  const [stage, setStage] = useState<PlayStage>(PlayStage.CODE);
   const [gameId, setGameId] = useState<string | null>(null);
   const [availableTeams, setAvailableTeams] = useState<string[] | null>(null);
   const [teams, setTeams] = useState<Map<string, Team>>(
@@ -55,7 +59,7 @@ function Play() {
     requestJoinGame,
     onGameJoined,
     onPlayerJoined,
-  } = useConnection();
+  } = usePlayerConnection();
 
   useEffect(() => {
     onCodeChecked(
@@ -76,12 +80,12 @@ function Play() {
       setTeams(deserializeTeams(teams));
       console.log("Player joined");
     });
-  }, [gameId]);
+  }, [gameId, setTeams, teams, onCodeChecked, onGameJoined, onPlayerJoined]);
 
   return (
     <>
-      {stage === "LOADING" && <Loading />}
-      {(stage === "CODE" || stage == "NAME") && (
+      {stage === PlayStage.LOADING && <Loading />}
+      {(stage === PlayStage.CODE || stage == PlayStage.NAME) && (
         <JoinGame
           checkCode={checkCode}
           gameId={gameId}
@@ -92,7 +96,7 @@ function Play() {
         ></JoinGame>
       )}
 
-      {stage === "WAITING" && <Lobby teams={teams} />}
+      {stage === PlayStage.WAITING && <Lobby teams={teams} />}
     </>
   );
 }

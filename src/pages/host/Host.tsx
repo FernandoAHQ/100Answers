@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import GameConfig from "./GameConfig";
-import { useConnection } from "../../hooks/useConnection";
 import Waiting from "./Waiting";
 import { Team } from "../../types/teams";
 import { deserializeTeams } from "../../utils/serialize";
+import { useGameHostConnection } from "../../hooks/connections/useGameHostConnection";
+import GameHost from "./GameHost";
 
 type HostStageType = "CONFIG" | "WAITING" | "IN-GAME";
 
@@ -14,7 +15,13 @@ function Host() {
     new Map<string, Team>()
   );
 
-  const { requestNewGame, onGameCreated, onPlayerJoined } = useConnection();
+  const {
+    requestNewGame,
+    onGameCreated,
+    onPlayerJoined,
+    startGame,
+    onGameStarted,
+  } = useGameHostConnection();
   useEffect(() => {
     onGameCreated((data: { gameId: string; teams: string[] }) => {
       setTimeout(() => {
@@ -30,7 +37,13 @@ function Host() {
       setTeams(deserializeTeams(teams));
       console.log("Player joined");
     });
-  }, [onGameCreated, gameId, onPlayerJoined]);
+
+    onGameStarted(() => {
+      setStage("IN-GAME");
+      //setTeams(deserializeTeams(teams));
+      //console.log("Player joined");
+    });
+  }, [gameId, teams, onGameCreated, onPlayerJoined, onGameStarted]);
 
   return (
     <>
@@ -43,7 +56,11 @@ function Host() {
         ></GameConfig>
       )}
 
-      {stage === "WAITING" && <Waiting gameId={gameId} teams={teams}></Waiting>}
+      {stage === "WAITING" && (
+        <Waiting gameId={gameId} teams={teams} startGame={startGame}></Waiting>
+      )}
+
+      {stage === "IN-GAME" && <GameHost />}
       {/* {stage === "WAITING" && <GameConfig></GameConfig>}
       {stage === "IN-GAME" && <GameConfig></GameConfig>} */}
     </>

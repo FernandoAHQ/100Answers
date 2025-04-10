@@ -3,9 +3,11 @@ import styles from "./host.module.css";
 function Waiting({
   gameId,
   teams,
+  startGame,
 }: {
   gameId: string | null;
   teams: Map<string, Team>;
+  startGame: (gameId: string) => void;
 }) {
   console.log(teams);
 
@@ -14,9 +16,24 @@ function Waiting({
       <h1 className={styles.waitingTitle}>
         {gameId ? "Waiting on Players..." : "Creating Game"}
       </h1>
-
       {gameId && <h2 className={styles.code}>Code: {gameId}</h2>}
-
+      {gameId && (
+        <button
+          disabled={!verifyPlayers(teams)}
+          className={styles.startBtn}
+          onClick={() => {
+            if (!verifyPlayers(teams)) {
+              alert(
+                "Please add players to all teams before starting the game."
+              );
+              return;
+            }
+            startGame(gameId);
+          }}
+        >
+          Start Game
+        </button>
+      )}
       <div className="flex flex-wrap items-stretch w-full">
         {Array.from(teams, ([name, value]) => ({ name, value })).map((team) => {
           return (
@@ -34,5 +51,15 @@ function Waiting({
     </div>
   );
 }
+
+const verifyPlayers = (teams: Map<string, Team>): boolean => {
+  let pass = true;
+  teams.forEach((team) => {
+    if (team.players.size <= 0) {
+      pass = false;
+    }
+  });
+  return pass;
+};
 
 export default Waiting;
