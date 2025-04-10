@@ -11,6 +11,7 @@ export function useConnection() {
     });
   }, [socket, on]);
 
+  //GAME HOST EVENTS
   const requestNewGame = (gameConfig: GameConfigType) => {
     emit("requestNewGame", gameConfig);
   };
@@ -23,8 +24,48 @@ export function useConnection() {
     });
   };
 
+  //GAME PLAYER EVENTS
+  const checkCode = (gameId: string) => {
+    emit("checkCode", { gameId });
+  };
+
+  const requestJoinGame = (gameId: string, name: string) => {
+    emit("requestJoinGame", { gameId, name });
+  };
+
+  const onCodeChecked = (
+    callback: (data: {
+      isValid: boolean;
+      availableTeams: string[] | null;
+      gameId: string;
+    }) => void
+  ) => {
+    on(
+      "codeChecked",
+      (data: {
+        isValid: boolean;
+        availableTeams: string[] | null;
+        gameId: string;
+      }) => {
+        callback(data);
+      }
+    );
+  };
+
+  const onGameJoined = (
+    callback: (data: { isAccepted: boolean; message: string }) => void
+  ) => {
+    on("gameJoined", (data: { isAccepted: boolean; message: string }) => {
+      callback(data);
+    });
+  };
+
   return {
     requestNewGame,
     onGameCreated,
+    checkCode,
+    requestJoinGame,
+    onCodeChecked,
+    onGameJoined,
   };
 }

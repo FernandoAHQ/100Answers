@@ -15,18 +15,14 @@ function Waiting({
         {gameId ? "Waiting on Players..." : "Creating Game"}
       </h1>
 
-      <div className="flex flex-col justify-center items-center w-full">
+      {gameId && <h2 className={styles.code}>Code: {gameId}</h2>}
+
+      <div className="flex flex-wrap items-stretch w-full">
         {Array.from(teams, ([name, value]) => ({ name, value })).map((team) => {
           return (
             <div key={team.name} className={styles.teamList}>
               <h2>{team.name}</h2>
               <div className={styles.teamMembers}>
-                <h3>Player 33</h3>
-                <h3>Player 33</h3>
-                <h3>Player 33</h3>
-                <h3>Player 33</h3>
-                <h3>Player 33</h3>
-                <h3>Player 33</h3>
                 {Array.from(team.value.players, ([name]) => ({ name })).map(
                   (player) => {
                     return <h3 key={player.name}>{player.name}</h3>;

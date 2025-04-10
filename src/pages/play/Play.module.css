@@ -1,0 +1,105 @@
+.teamButton {
+  width: 50%;
+  border-radius: 0;
+  font-size: larger;
+  font-weight: 900;
+}
+
+.teamButton:nth-child(1) {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-top-left-radius: 1em;
+  border-bottom-left-radius: 1em;
+  color: #ffa500;
+}
+
+.teamButton:nth-child(1):hover {
+  animation: glowDark 1.5s ease-in-out infinite;
+}
+
+.teamButtonSelected {
+  animation: glow 1.5s ease-in-out infinite;
+}
+
+.teamButton:nth-child(2) {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 1em;
+  color: rgb(1, 81, 150);
+}
+
+.teamButton:nth-child(2):hover {
+  animation: glowWhite 1.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.8)) brightness(1.2);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgb(255, 0, 0)) brightness(1.5);
+  }
+}
+
+@keyframes glowWhite {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8)) brightness(1.2);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1)) brightness(1.5);
+  }
+}
+
+@keyframes glowDark {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8)) brightness(1.2);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 1)) brightness(1.5);
+  }
+}
+
+.glowing {
+  animation: glowWhite 1.5s ease-in-out infinite;
+}
+
+.joinBtn {
+  background-color: rgb(1, 81, 150);
+  color: orange;
+  border-radius: 1em;
+  outline: solid 1px orange;
+  /* "text-orange-400 font-extrabold bg-orange-400 rounded p-2 w-full" */
+}
+
+.joinBtn:hover {
+  filter: drop-shadow(0 0 5px rgba(1, 81, 150, 1)) brightness(1.2);
+  transition: all 0.1s ease-in-out;
+}
+
+.btnBack {
+  font-weight: 900;
+  background-color: transparent;
+  border: solid 1px orange;
+  color: white;
+}
+
+.btnBack:hover {
+  color: orange;
+}
+
+.btnBack:hover {
+  filter: drop-shadow(0 0 0.75rem orange);
+}
+
+.btnGo {
+  font-weight: 900;
+  background-color: orange;
+  color: #ffe3c2;
+}
+
+.btnGo:hover {
+  filter: drop-shadow(0 0 0.75rem orange);
+  color: white;
+}

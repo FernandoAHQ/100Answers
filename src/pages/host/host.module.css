@@ -87,8 +87,7 @@
 .teamList {
   margin: 1em;
   padding: 1em;
-  background-color: #ffffff33;
-  border-radius: 0.2em;
+  background-color: #ffffff09;
   font-size: 2rem;
   font-weight: bolder;
   width: 100%;
@@ -98,22 +97,31 @@
 
 .teamList > h2 {
   text-align: center;
-  color: rgb(2, 68, 126);
+  color: #ff9419;
 }
 
 .teamMembers {
-  background-color: red;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .teamMembers > h3 {
   text-align: center;
+  border-radius: 0.2em;
+  background-color: rgba(255, 255, 255, 0.123);
+  margin: 0.2em;
   font-size: 1.5rem;
-  padding: 0.5em;
+  padding: 0.2em;
 }
 
-.vl {
-  border-left: 2px solid #ff9419;
-  height: auto;
+.code {
+  font-size: 2em;
+  font-weight: bolder;
+  text-align: center;
+  color: #fff;
+  padding: 0.5em;
+  width: 100vw;
+  margin-bottom: 0.5em;
+  background-color: rgba(255, 255, 255, 0.123);
 }
