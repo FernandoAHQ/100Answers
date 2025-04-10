@@ -23,11 +23,9 @@ function Waiting({
             <div key={team.name} className={styles.teamList}>
               <h2>{team.name}</h2>
               <div className={styles.teamMembers}>
-                {Array.from(team.value.players, ([name]) => ({ name })).map(
-                  (player) => {
-                    return <h3 key={player.name}>{player.name}</h3>;
-                  }
-                )}
+                {Array.from(team.value.players).map((name) => (
+                  <h3 key={name}>{name}</h3>
+                ))}
               </div>
             </div>
           );

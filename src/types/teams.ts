@@ -1,4 +1,4 @@
 export interface Team {
-  players: Map<string, string>; //id, name
+  players: Set<string>; //id, name
   points: number;
 }

@@ -103,3 +103,34 @@
   filter: drop-shadow(0 0 0.75rem orange);
   color: white;
 }
+
+.teamList {
+  margin: 1em;
+  padding: 1em;
+  background-color: #ffffff09;
+  font-size: 2rem;
+  font-weight: bolder;
+  width: 100%;
+  flex: 1;
+  align-items: start;
+}
+
+.teamList > h2 {
+  text-align: center;
+  color: #ff9419;
+}
+
+.teamMembers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.teamMembers > h3 {
+  text-align: center;
+  border-radius: 0.2em;
+  background-color: rgba(255, 255, 255, 0.123);
+  margin: 0.2em;
+  font-size: 1.5rem;
+  padding: 0.2em;
+}

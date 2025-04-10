@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSocket } from "./useSocket";
 import { GameConfigType } from "../pages/host/GameConfig";
+import { Team } from "../types/teams";
 
 export function useConnection() {
   const { emit, on, socket } = useSocket("http://localhost:3000");
@@ -24,13 +25,18 @@ export function useConnection() {
     });
   };
 
+  const onPlayerJoined = (callback: (teams: Map<string, Team>) => void) => {
+    on("playerJoined", ({ teams }: { teams: Map<string, Team> }) => {
+      callback(teams);
+    });
+  };
   //GAME PLAYER EVENTS
   const checkCode = (gameId: string) => {
     emit("checkCode", { gameId });
   };
 
-  const requestJoinGame = (gameId: string, name: string) => {
-    emit("requestJoinGame", { gameId, name });
+  const requestJoinGame = (gameId: string, name: string, team: string) => {
+    emit("requestJoinGame", { gameId, name, team });
   };
 
   const onCodeChecked = (
@@ -53,11 +59,14 @@ export function useConnection() {
   };
 
   const onGameJoined = (
-    callback: (data: { isAccepted: boolean; message: string }) => void
+    callback: (data: { isAccepted: boolean; teams: Map<string, Team> }) => void
   ) => {
-    on("gameJoined", (data: { isAccepted: boolean; message: string }) => {
-      callback(data);
-    });
+    on(
+      "joinedGame",
+      (data: { isAccepted: boolean; teams: Map<string, Team> }) => {
+        callback(data);
+      }
+    );
   };
 
   return {
@@ -67,5 +76,6 @@ export function useConnection() {
     requestJoinGame,
     onCodeChecked,
     onGameJoined,
+    onPlayerJoined,
   };
 }

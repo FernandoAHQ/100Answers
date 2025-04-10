@@ -3,6 +3,9 @@ import { useConnection } from "../../hooks/useConnection";
 import JoinGame from "./JoinGame";
 import { PlayStageType } from "../../types/Play.types";
 import Loading from "../Loading";
+import { Team } from "../../types/teams";
+import { deserializeTeams } from "../../utils/serialize";
+import Lobby from "./Lobby";
 
 function Play() {
   const codeChecked = (data: {
@@ -22,12 +25,19 @@ function Play() {
     }
   };
 
-  const gameJoined = (data: { isAccepted: boolean; message: string }) => {
+  const gameJoined = ({
+    isAccepted,
+    teams,
+  }: {
+    isAccepted: boolean;
+    teams: Map<string, Team>;
+  }) => {
     setTimeout(() => {
-      if (data.isAccepted) {
+      if (isAccepted) {
+        setTeams(deserializeTeams(teams));
         setStage("WAITING");
       } else {
-        alert(data.message);
+        alert("Error");
       }
     }, 1500);
   };
@@ -35,9 +45,17 @@ function Play() {
   const [stage, setStage] = useState<PlayStageType>("CODE");
   const [gameId, setGameId] = useState<string | null>(null);
   const [availableTeams, setAvailableTeams] = useState<string[] | null>(null);
+  const [teams, setTeams] = useState<Map<string, Team>>(
+    new Map<string, Team>()
+  );
 
-  const { checkCode, onCodeChecked, requestJoinGame, onGameJoined } =
-    useConnection();
+  const {
+    checkCode,
+    onCodeChecked,
+    requestJoinGame,
+    onGameJoined,
+    onPlayerJoined,
+  } = useConnection();
 
   useEffect(() => {
     onCodeChecked(
@@ -50,8 +68,13 @@ function Play() {
       }
     );
 
-    onGameJoined((data: { isAccepted: boolean; message: string }) => {
+    onGameJoined((data: { isAccepted: boolean; teams: Map<string, Team> }) => {
       gameJoined(data);
+    });
+
+    onPlayerJoined((teams: Map<string, Team>) => {
+      setTeams(deserializeTeams(teams));
+      console.log("Player joined");
     });
   }, [gameId]);
 
@@ -68,6 +91,8 @@ function Play() {
           availableTeams={availableTeams}
         ></JoinGame>
       )}
+
+      {stage === "WAITING" && <Lobby teams={teams} />}
     </>
   );
 }

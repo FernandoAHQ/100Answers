@@ -13,7 +13,7 @@ function JoinGame({
   availableTeams,
 }: {
   checkCode: (gameId: string) => void;
-  requestJoin: (gameId: string, name: string) => void;
+  requestJoin: (gameId: string, name: string, team: string) => void;
   stage: PlayStageType;
   setStage: (nextStage: PlayStageType) => void;
   gameId: string | null;
@@ -22,6 +22,19 @@ function JoinGame({
   const [code, setCode] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [teamSelected, setTeam] = useState<string>("");
+
+  if (availableTeams?.length == 0) {
+    return (
+      <div className="flex flex-col justify-center items-center w-full">
+        <h1 className="mb-5">Teams are complete</h1>
+        <Link to="/">
+          <button className={`${styles.btn}, ${styles.btnBack}`}>
+            Main Menu
+          </button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="">
@@ -62,29 +75,33 @@ function JoinGame({
                 setName(e.target.value);
               }}
             />
-            <h1
-              className={`mb-5 mt-10 text-center font-bold ${styles.teamHeader}`}
-            >
-              Choose a Team
-            </h1>
-            <div className="flex flex-wrap flex-row items-stretch w-full mb-10">
-              {availableTeams &&
-                availableTeams.map((team) => {
-                  return (
-                    <button
-                      key={team}
-                      className={`${styles.teamButton} ${
-                        teamSelected === team && styles.teamButtonSelected
-                      }`}
-                      onClick={() => {
-                        setTeam(team);
-                      }}
-                    >
-                      {team}
-                    </button>
-                  );
-                })}
-            </div>
+            {availableTeams && (
+              <>
+                <h1
+                  className={`mb-5 mt-10 text-center font-bold ${styles.teamHeader}`}
+                >
+                  Choose a Team
+                </h1>
+                <div className="flex flex-wrap flex-row items-stretch w-full mb-10">
+                  {availableTeams &&
+                    availableTeams.map((team) => {
+                      return (
+                        <button
+                          key={team}
+                          className={`${styles.teamButton} ${
+                            teamSelected === team && styles.teamButtonSelected
+                          }`}
+                          onClick={() => {
+                            setTeam(team);
+                          }}
+                        >
+                          {team}
+                        </button>
+                      );
+                    })}
+                </div>
+              </>
+            )}
           </>
         )}
 
@@ -116,8 +133,7 @@ function JoinGame({
                     alert("Please select a team.");
                     return;
                   }
-                  alert(`Joining game as ${name} in team ${teamSelected}`);
-                  requestJoin(gameId!, name);
+                  requestJoin(gameId!, name, teamSelected);
                   break;
               }
               setStage("LOADING");
